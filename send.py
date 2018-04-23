@@ -9,10 +9,7 @@ def sendFile(clientsocket, filename):
     # wait for server to be ready
     waitForNext(clientsocket)
 
-    # send filename and filesize
-    filenameencoded = filename.encode('ascii')
-    clientsocket.send(filenameencoded)
-    waitForNext(clientsocket)
+    # send filesize
     filesize = os.path.getsize(filename)
     clientsocket.send(struct.pack("Q", filesize))
     waitForNext(clientsocket)

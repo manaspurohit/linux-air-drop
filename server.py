@@ -30,6 +30,6 @@ while True:
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
 
-    receiveFile(clientsocket)
+    receiveFile(clientsocket, '/Users/manaspurohit/Desktop/poop.txt')
 
     clientsocket.close()
