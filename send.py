@@ -1,6 +1,7 @@
 import socket
 import os
 import struct
+import hashlib
 
 bufsize = 4096
 
@@ -28,13 +29,21 @@ def sendFile(clientsocket, filename):
             datasize = filesize
 
         data = f.read(datasize)
-        clientsocket.send(data)
-        waitForNext(clientsocket)
+        send_data(clientsocket, data)
         filesize = filesize - datasize
         if filesize == 0:
             break
 
     f.close()
+
+def send_data(clientsocket, data):
+    clientsocket.send(data)
+    waitForNext(clientsocket)
+    myhashlib = hashlib.md5()
+    myhashlib.update(data)
+    clientsocket.send(myhashlib.digest())
+    if not waitForNext(clientsocket):
+        send_data(clientsocket, data)
 
 def waitForNext(clientsocket):
     clientmsg = clientsocket.recv(bufsize)
