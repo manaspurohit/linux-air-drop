@@ -20,7 +20,7 @@ clientid = "This is the client"
 encodedclientid = clientid.encode('ascii')
 clientsocket.send(encodedclientid)
 
-sendFile(clientsocket, "poop.txt")
+sendFile(clientsocket, 'poop.txt')
 
 clientsocket.close()
 

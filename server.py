@@ -10,7 +10,7 @@ host = socket.gethostname()
 port = 41779 # uncommonly used port
 
 # bind the socket to host and port
-serversocket.bind((host, port))
+serversocket.bind(('', port))
 
 # queue up to 5 requests
 serversocket.listen(5)
@@ -30,6 +30,6 @@ while True:
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
 
-    receiveFile(clientsocket, "poop.txt")
+    receiveFile(clientsocket)
 
     clientsocket.close()

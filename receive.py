@@ -1,14 +1,35 @@
 import socket
+import struct
 
-def receiveFile(clientsocket, filename):
+next = "next".encode('ascii')
+
+def receiveFile(clientsocket):
     bufsize = 4096
 
+    # let client know we are ready to receive
+    readyForNext(clientsocket)
+
+    # get filename and filesize
     clientmsg = clientsocket.recv(bufsize)
+    filename = clientmsg.decode('ascii')
+    readyForNext(clientsocket)
+    clientmsg = clientsocket.recv(bufsize)
+    filesize = struct.unpack("Q", clientmsg)[0]
+    readyForNext(clientsocket)
 
-    more = "more"
+    while True:
+        datasize = 0
+        if (filesize > bufsize):
+            datasize = bufsize
+        else:
+            datasize = filesize
 
-    while clientmsg.decode('ascii') == more:
-        clientmsg = clientsocket.recv(bufsize)
-        print(clientmsg.decode('ascii'), flush=True)
+        clientmsg = clientsocket.recv(datasize)
+        print(clientmsg)
+        readyForNext(clientsocket)
+        filesize = filesize - datasize
+        if filesize == 0:
+            break
 
-        clientmsg = clientsocket.recv(bufsize)
+def readyForNext(clientsocket):
+    clientsocket.send(next)
