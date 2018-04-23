@@ -36,12 +36,12 @@ def receive_data(clientsocket, file, datasize):
     hash = clientsocket.recv(bufsize)
     myhashlib = hashlib.md5()
     myhashlib.update(clientmsg)
-    if hash != myhashlib.digest():
-        clientsocket.send("hash doesn't match".encode('ascii'))
-        receive_data(clientsocket, file, datasize)
-    else:
-        file.write(clientmsg)
-        readyForNext(clientsocket)
+    # if hash != myhashlib.digest():
+    #     clientsocket.send("hash doesn't match".encode('ascii'))
+    #     receive_data(clientsocket, file, datasize)
+    # else:
+    file.write(clientmsg)
+    readyForNext(clientsocket)
 
 def readyForNext(clientsocket):
     clientsocket.send(next)
