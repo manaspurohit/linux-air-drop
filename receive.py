@@ -64,11 +64,11 @@ def prompt_user(clientsocket):
         while True:
             try:
                 newfilepath = input('Enter in the path for where you would like to save the file (/path/to/filename.txt): ')
-                os.makedirs(os.path.dirname(newfilepath), exist_ok=True)
+                os.makedirs(os.path.expanduser(os.path.dirname(newfilepath)), exist_ok=True)
             except:
                 print('Invalid pathname!', flush=True)
                 continue
 
             readyForNext(clientsocket)
-            receiveFile(clientsocket, newfilepath)
+            receiveFile(clientsocket, os.path.expanduser(newfilepath))
             return
