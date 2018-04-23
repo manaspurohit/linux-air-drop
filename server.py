@@ -1,4 +1,5 @@
 import socket
+from receive import receiveFile, prompt_user
 
 bufsize = 4096
 
@@ -9,7 +10,7 @@ host = socket.gethostname()
 port = 41779 # uncommonly used port
 
 # bind the socket to host and port
-serversocket.bind((host, port))
+serversocket.bind(('', port))
 
 # queue up to 5 requests
 serversocket.listen(5)
@@ -25,8 +26,12 @@ while True:
     while (serverstringbytes != len(encodedmsg)):
         serverstringbytes = clientsocket.send(encodedmsg)
 
+
     # Receive from client
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
+
+    # ask user to accept or decline the upcoming file transfer
+    userresponse = prompt_user(clientsocket)
 
     clientsocket.close()
