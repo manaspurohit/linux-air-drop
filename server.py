@@ -1,4 +1,5 @@
 import socket
+from receive import receiveFile
 
 bufsize = 4096
 
@@ -29,13 +30,6 @@ while True:
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
 
-    clientmsg = clientsocket.recv(bufsize)
-    print(clientmsg.decode('ascii'), flush=True)
-
-    clientmsg = clientsocket.recv(bufsize)
-    print(clientmsg.decode('ascii'), flush=True)
-
-    clientmsg = clientsocket.recv(bufsize)
-    print(clientmsg.decode('ascii'), flush=True)
+    receiveFile(clientsocket, "poop.txt")
 
     clientsocket.close()
