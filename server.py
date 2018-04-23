@@ -1,5 +1,6 @@
 import socket
 from receive import receiveFile, prompt_user
+import serverfinder
 
 bufsize = 4096
 
@@ -8,6 +9,9 @@ serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 host = socket.gethostname()
 port = 41779 # uncommonly used port
+
+# register the daemon with the remote server
+serverfinder.register()
 
 # bind the socket to host and port
 serversocket.bind(('', port))
