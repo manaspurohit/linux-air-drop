@@ -86,4 +86,19 @@ def find_live_hosts():
 
     return live_list
 
-print(get_ips())
+def ask_host():
+    hosts = find_live_hosts()
+    print('the following computers are ready to recieve files:')
+
+    for i in range(len(hosts)):
+        print('{0}: {1}'.format(str(i + 1), hosts[i]))
+
+    print('which one would you like to send to?')
+
+    result = input()
+
+    while not (result.isdigit() or (int(result) > 0 and int(result) <= len(hosts))):
+        print('Invalid. Which host would you like to send to?')
+        result = input()
+
+    return hosts[int(result) - 1]

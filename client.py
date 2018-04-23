@@ -1,15 +1,28 @@
 import socket
 from send import sendFile
+import serverfinder
 
 bufsize = 4096
 
-clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+DEBUG = False
 
-host = socket.gethostname()
+clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 41779 # uncommonly used port
 
-# connect the socket to host and port
-clientsocket.connect((host, port))
+connected = False
+
+while not connected:
+    host = socket.gethostname() if DEBUG else serverfinder.ask_host()
+
+    print('attempting to connect to ' + host)
+
+    # connect the socket to host and port
+    try:
+        clientsocket.connect((host, port))
+        connected = True
+    except:
+        print('could not connect to ' + host + '\n')
+
 
 # Wait for server response
 # Receive no more than bufsize bytes
