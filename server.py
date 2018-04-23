@@ -34,6 +34,4 @@ while True:
     # ask user to accept or decline the upcoming file transfer
     userresponse = prompt_user(clientsocket)
 
-    receiveFile(clientsocket)
-
     clientsocket.close()

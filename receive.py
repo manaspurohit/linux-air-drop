@@ -4,19 +4,18 @@ import struct
 
 next = "next".encode('ascii')
 
-def receiveFile(clientsocket):
+def receiveFile(clientsocket, filename):
     bufsize = 4096
 
     # let client know we are ready to receive
     readyForNext(clientsocket)
 
-    # get filename and filesize
-    clientmsg = clientsocket.recv(bufsize)
-    filename = clientmsg.decode('ascii')
-    readyForNext(clientsocket)
+    # get filesize
     clientmsg = clientsocket.recv(bufsize)
     filesize = struct.unpack("Q", clientmsg)[0]
     readyForNext(clientsocket)
+
+    f = open(filename, 'wb')
 
     while True:
         datasize = 0
@@ -27,12 +26,13 @@ def receiveFile(clientsocket):
 
         clientmsg = clientsocket.recv(datasize)
         print(clientmsg)
+        f.write(clientmsg)
         readyForNext(clientsocket)
         filesize = filesize - datasize
         if filesize == 0:
             break
 
-        clientmsg = clientsocket.recv(bufsize)
+    f.close()
 
 def readyForNext(clientsocket):
     clientsocket.send(next)
@@ -52,9 +52,7 @@ def prompt_user(clientsocket):
             try:
                 newfilepath = input('Enter in the path for where you would like to save the file (/path/to/filename.txt): ')
                 os.makedirs(os.path.dirname(newfilepath), exist_ok=True)
-                # TODO: call receiveFile with newfilepath
-                newfile = open(newfilepath, 'w')
-                newfile.close()
+                receiveFile(clientsocket, newfilepath)
                 return
             except:
                 print('Invalid pathname!', flush=True)
