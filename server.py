@@ -1,5 +1,5 @@
 import socket
-from receive import receiveFile
+from receive import receiveFile, prompt_user
 
 bufsize = 4096
 
@@ -26,10 +26,12 @@ while True:
     while (serverstringbytes != len(encodedmsg)):
         serverstringbytes = clientsocket.send(encodedmsg)
 
+
     # Receive from client
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
 
-    receiveFile(clientsocket, '/Users/manaspurohit/Desktop/poop.txt')
+    # ask user to accept or decline the upcoming file transfer
+    userresponse = prompt_user(clientsocket)
 
     clientsocket.close()
