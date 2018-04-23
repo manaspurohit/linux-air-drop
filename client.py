@@ -1,4 +1,5 @@
 import socket
+from send import sendFile
 
 bufsize = 4096
 
@@ -18,6 +19,8 @@ msg = clientsocket.recv(bufsize)
 clientid = "This is the client"
 encodedclientid = clientid.encode('ascii')
 clientsocket.send(encodedclientid)
+
+sendFile(clientsocket, "poop.txt")
 
 clientsocket.close()
 

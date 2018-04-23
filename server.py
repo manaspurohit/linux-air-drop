@@ -29,4 +29,13 @@ while True:
     clientmsg = clientsocket.recv(bufsize)
     print(clientmsg.decode('ascii'), flush=True)
 
+    clientmsg = clientsocket.recv(bufsize)
+    print(clientmsg.decode('ascii'), flush=True)
+
+    clientmsg = clientsocket.recv(bufsize)
+    print(clientmsg.decode('ascii'), flush=True)
+
+    clientmsg = clientsocket.recv(bufsize)
+    print(clientmsg.decode('ascii'), flush=True)
+
     clientsocket.close()
