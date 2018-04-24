@@ -36,12 +36,12 @@ def receive_data(clientsocket, file, datasize):
     hash = clientsocket.recv(bufsize)
     myhashlib = hashlib.md5()
     myhashlib.update(clientmsg)
-    if hash != myhashlib.digest():
-        clientsocket.send("hash doesn't match".encode('ascii'))
-        receive_data(clientsocket, file, datasize)
-    else:
-        file.write(clientmsg)
-        readyForNext(clientsocket)
+    # if hash != myhashlib.digest():
+    #     clientsocket.send("hash doesn't match".encode('ascii'))
+    #     receive_data(clientsocket, file, datasize)
+    # else:
+    file.write(clientmsg)
+    readyForNext(clientsocket)
 
 def readyForNext(clientsocket):
     clientsocket.send(next)
@@ -64,11 +64,11 @@ def prompt_user(clientsocket):
         while True:
             try:
                 newfilepath = input('Enter in the path for where you would like to save the file (/path/to/filename.txt): ')
-                os.makedirs(os.path.dirname(newfilepath), exist_ok=True)
+                os.makedirs(os.path.expanduser(os.path.dirname(newfilepath)), exist_ok=True)
             except:
                 print('Invalid pathname!', flush=True)
                 continue
 
             readyForNext(clientsocket)
-            receiveFile(clientsocket, newfilepath)
+            receiveFile(clientsocket, os.path.expanduser(newfilepath))
             return

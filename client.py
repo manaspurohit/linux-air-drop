@@ -1,6 +1,8 @@
 import socket
 from send import sendFile
 import serverfinder
+import sys
+import os.path
 
 bufsize = 4096
 
@@ -33,8 +35,11 @@ clientid = "This is the client"
 encodedclientid = clientid.encode('ascii')
 clientsocket.send(encodedclientid)
 
-sendFile(clientsocket, 'poop.txt')
+filename = sys.argv[1]
+print(filename)
+if not os.path.isfile(filename):
+    print("file not found!")
+else:
+    sendFile(clientsocket, filename)
 
 clientsocket.close()
-
-print (msg.decode('ascii'))
