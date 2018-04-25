@@ -31,17 +31,27 @@ def receiveFile(clientsocket, filepath):
     f.close()
 
 def receive_data(clientsocket, file, datasize):
-    clientmsg = clientsocket.recv(datasize)
+    clientmsg = receive_bytes(clientsocket, datasize)
     readyForNext(clientsocket)
     hash = clientsocket.recv(bufsize)
     myhashlib = hashlib.md5()
     myhashlib.update(clientmsg)
-    # if hash != myhashlib.digest():
-    #     clientsocket.send("hash doesn't match".encode('ascii'))
-    #     receive_data(clientsocket, file, datasize)
-    # else:
-    file.write(clientmsg)
-    readyForNext(clientsocket)
+    if hash != myhashlib.digest():
+        clientsocket.send("hash doesn't match".encode('ascii'))
+        receive_data(clientsocket, file, datasize)
+    else:
+        file.write(clientmsg)
+        readyForNext(clientsocket)
+
+def receive_bytes(clientsocket, bufsize):
+    clientmsg = clientsocket.recv(bufsize)
+    received = len(clientmsg)
+
+    while (received < bufsize):
+        clientmsg = clientmsg + clientsocket.recv(bufsize - received)
+        received = len(clientmsg)
+
+    return clientmsg
 
 def readyForNext(clientsocket):
     clientsocket.send(next)
